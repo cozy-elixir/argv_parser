@@ -1,80 +1,65 @@
 defmodule Optimus.Mixfile do
   use Mix.Project
 
+  @version "0.5.0"
+  @description "Command line argument parser."
   @source_url "https://github.com/funbox/optimus"
-  @version "0.3.0"
 
   def project do
     [
       app: :optimus,
       version: @version,
-      elixir: "~> 1.3",
-      build_embedded: Mix.env() == :prod,
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      description: @description,
+      source_url: @source_url,
       docs: docs(),
-      test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.post": :test,
-        "coveralls.html": :test
-      ],
-      dialyzer: [
-        plt_add_deps: true,
-        plt_add_apps: [:ssl],
-        flags: ["-Werror_handling", "-Wrace_conditions"]
-      ],
-      package: package()
+      package: package(),
+      aliases: aliases()
     ]
   end
 
   def application do
-    [applications: [:logger]]
-  end
-
-  cond do
-    System.version() |> Version.match?(">= 1.10.0") ->
-      def ex_doc_version(), do: "~> 0.23"
-
-    System.version() |> Version.match?(">= 1.7.0") ->
-      def ex_doc_version(), do: "~> 0.22.0"
-
-    true ->
-      def ex_doc_version(), do: "~> 0.18.0"
+    [
+      extra_applications: [:logger]
+    ]
   end
 
   defp deps do
     [
-      {:excoveralls, "~> 0.5", only: :test},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:ex_doc, ex_doc_version(), only: :dev, runtime: false}
-    ]
-  end
-
-  defp package do
-    [
-      name: :optimus,
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Ilya Averyanov"],
-      licenses: ["MIT"],
-      links: %{"GitHub" => @source_url},
-      description: "Command line option parser inspired by clap.rs"
+      {:ex_check, ">= 0.0.0", only: [:dev], runtime: false},
+      {:credo, ">= 0.0.0", only: [:dev], runtime: false},
+      {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
 
   defp docs do
     [
-      extras: [
-        "LICENSE.md": [title: "License"],
-        "README.md": [title: "Overview"]
-      ],
-      main: "readme",
-      assets: "assets",
-      logo: "assets/logo.png",
+      extras: ["README.md", "LICENSE.md"],
       source_url: @source_url,
-      source_ref: "#{@version}",
-      formatters: ["html"]
+      source_ref: "v#{@version}"
     ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      maintainers: ["Ilya Averyanov", "Zeke Dou"],
+      links: %{
+        "GitHub" => @source_url
+      }
+    ]
+  end
+
+  defp aliases do
+    [publish: ["hex.publish", "tag"], tag: &tag_release/1]
+  end
+
+  defp tag_release(_) do
+    Mix.shell().info("Tagging release as v#{@version}")
+    System.cmd("git", ["tag", "v#{@version}"])
+    System.cmd("git", ["push", "--tags"])
   end
 end
