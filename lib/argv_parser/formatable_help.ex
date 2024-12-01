@@ -1,6 +1,6 @@
-defmodule Optimus.FormatableHelp do
-  alias Optimus.ColumnFormatter, as: CF
-  alias Optimus.Format
+defmodule ArgvParser.FormatableHelp do
+  alias ArgvParser.ColumnFormatter, as: CF
+  alias ArgvParser.Format
 
   @left_pading 4
   @separaion_padding 8

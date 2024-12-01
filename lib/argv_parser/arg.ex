@@ -1,4 +1,4 @@
-defmodule Optimus.Arg do
+defmodule ArgvParser.Arg do
   defstruct [
     :name,
     :value_name,
@@ -8,7 +8,7 @@ defmodule Optimus.Arg do
   ]
 
   def new(spec) do
-    Optimus.Arg.Builder.build(spec)
+    ArgvParser.Arg.Builder.build(spec)
   end
 
   def parse(arg, parsed, [item | command_line]) do
@@ -22,7 +22,7 @@ defmodule Optimus.Arg do
   end
 end
 
-defimpl Optimus.Format, for: Optimus.Arg do
+defimpl ArgvParser.Format, for: ArgvParser.Arg do
   def format(arg), do: arg.value_name
 
   def format_in_error(arg), do: arg.value_name

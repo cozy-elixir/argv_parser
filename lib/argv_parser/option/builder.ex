@@ -1,6 +1,6 @@
-defmodule Optimus.Option.Builder do
-  alias Optimus.Option
-  alias Optimus.PropertyParsers, as: PP
+defmodule ArgvParser.Option.Builder do
+  alias ArgvParser.Option
+  alias ArgvParser.PropertyParsers, as: PP
 
   def build({name, props}) do
     case build_from_props(%Option{name: name}, props) do

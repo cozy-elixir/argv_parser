@@ -1,4 +1,4 @@
-defmodule Optimus.Option do
+defmodule ArgvParser.Option do
   defstruct [
     :name,
     :value_name,
@@ -12,7 +12,7 @@ defmodule Optimus.Option do
   ]
 
   def new(spec) do
-    Optimus.Option.Builder.build(spec)
+    ArgvParser.Option.Builder.build(spec)
   end
 
   def parse(option, parsed, command_line) when length(command_line) > 0 do
@@ -27,11 +27,11 @@ defmodule Optimus.Option do
 
             {:error, reason} ->
               {:error,
-               "invalid value #{inspect(raw_value)} for #{Optimus.Format.format_in_error(option)} option: #{reason}",
+               "invalid value #{inspect(raw_value)} for #{ArgvParser.Format.format_in_error(option)} option: #{reason}",
                rest}
           end
         else
-          {:error, "multiple occurrences of option #{Optimus.Format.format_in_error(option)}",
+          {:error, "multiple occurrences of option #{ArgvParser.Format.format_in_error(option)}",
            rest}
         end
 
@@ -86,7 +86,7 @@ defmodule Optimus.Option do
   def try_match([], _, _), do: :skip
 end
 
-defimpl Optimus.Format, for: Optimus.Option do
+defimpl ArgvParser.Format, for: ArgvParser.Option do
   def format(option) do
     [option.short, option.long]
     |> Enum.reject(&is_nil/1)

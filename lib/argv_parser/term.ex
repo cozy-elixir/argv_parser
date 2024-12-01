@@ -1,4 +1,4 @@
-defmodule Optimus.Term do
+defmodule ArgvParser.Term do
   @moduledoc false
 
   @doc false

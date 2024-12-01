@@ -1,11 +1,11 @@
-defmodule Optimus.UsageTest do
+defmodule ArgvParser.UsageTest do
   use ExUnit.Case
 
-  alias Optimus.Usage
+  alias ArgvParser.Usage
 
   def optimus do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         name: "awesome",
         args: [
           first: [
@@ -66,7 +66,7 @@ defmodule Optimus.UsageTest do
 
   test "usage: unknown args" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         name: "awesome",
         allow_unknown_args: true,
         args: [

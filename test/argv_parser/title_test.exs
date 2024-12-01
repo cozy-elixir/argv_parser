@@ -1,11 +1,11 @@
-defmodule Optimus.TitleTest do
+defmodule ArgvParser.TitleTest do
   use ExUnit.Case
 
-  alias Optimus.Title
+  alias ArgvParser.Title
 
   test "main command title: full" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         description: "Elixir App",
         version: "1.0.1",
         author: "Averyanov Ilya av@fun-box.ru",
@@ -17,14 +17,14 @@ defmodule Optimus.TitleTest do
   end
 
   test "main command title: with empty fields" do
-    {:ok, optimus} = Optimus.new(description: "Elixir App")
+    {:ok, optimus} = ArgvParser.new(description: "Elixir App")
 
     assert ["Elixir App"] == Title.title(optimus)
   end
 
   test "subcommand title: full" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         description: "Elixir App",
         version: "1.0.1",
         author: "Averyanov Ilya av@fun-box.ru",
@@ -46,7 +46,7 @@ defmodule Optimus.TitleTest do
 
   test "subcommand title: with empty fields" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         description: "Elixir App",
         version: "1.0.1",
         author: "Averyanov Ilya av@fun-box.ru",

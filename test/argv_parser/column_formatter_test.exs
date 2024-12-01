@@ -1,7 +1,7 @@
-defmodule Optimus.ColumnFormatterTest do
+defmodule ArgvParser.ColumnFormatterTest do
   use ExUnit.Case
 
-  alias Optimus.ColumnFormatter, as: CF
+  alias ArgvParser.ColumnFormatter, as: CF
 
   test "format: empty" do
     assert {:ok, _} = CF.format([], [])

@@ -1,9 +1,9 @@
-defmodule Optimus.Help do
+defmodule ArgvParser.Help do
   def help(optimus, subcommand_path, max_width) do
-    title = Optimus.Title.title(optimus, subcommand_path)
+    title = ArgvParser.Title.title(optimus, subcommand_path)
     usage = usage(optimus, subcommand_path)
 
-    {subcommand, _} = Optimus.fetch_subcommand(optimus, subcommand_path)
+    {subcommand, _} = ArgvParser.fetch_subcommand(optimus, subcommand_path)
 
     formatable_help =
       subcommand_formatables(subcommand)
@@ -17,12 +17,12 @@ defmodule Optimus.Help do
     List.flatten([
       "",
       "USAGE:",
-      "    #{Optimus.Usage.usage(optimus)}",
-      "    #{Optimus.Usage.version_usage(optimus)}",
-      "    #{Optimus.Usage.help_usage(optimus)}",
+      "    #{ArgvParser.Usage.usage(optimus)}",
+      "    #{ArgvParser.Usage.version_usage(optimus)}",
+      "    #{ArgvParser.Usage.help_usage(optimus)}",
       case optimus.subcommands do
         [] -> []
-        _ -> "    #{Optimus.Usage.subcomand_help_usage(optimus)}"
+        _ -> "    #{ArgvParser.Usage.subcomand_help_usage(optimus)}"
       end,
       ""
     ])
@@ -32,7 +32,7 @@ defmodule Optimus.Help do
     [
       "",
       "USAGE:",
-      "    #{Optimus.Usage.usage(optimus, subcommand_path)}",
+      "    #{ArgvParser.Usage.usage(optimus, subcommand_path)}",
       ""
     ]
   end
@@ -54,7 +54,7 @@ defmodule Optimus.Help do
   defp formatable_help(formatables_with_titles, max_width) do
     formatables_with_titles
     |> Enum.map(fn {title, formatables} ->
-      Optimus.FormatableHelp.formatable_help(title, formatables, max_width)
+      ArgvParser.FormatableHelp.formatable_help(title, formatables, max_width)
     end)
     |> Enum.intersperse([""])
     |> Enum.concat()

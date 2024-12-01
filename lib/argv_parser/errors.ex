@@ -1,4 +1,4 @@
-defmodule Optimus.Errors do
+defmodule ArgvParser.Errors do
   def format(optimus, errors) do
     ["The following errors occurred:"] ++
       format_errors(errors) ++
@@ -6,7 +6,7 @@ defmodule Optimus.Errors do
   end
 
   def format(optimus, subcommand_path, errors) do
-    {_subcommand, [_ | subcommand_name]} = Optimus.fetch_subcommand(optimus, subcommand_path)
+    {_subcommand, [_ | subcommand_name]} = ArgvParser.fetch_subcommand(optimus, subcommand_path)
 
     ["The following errors occurred:"] ++
       format_errors(errors) ++

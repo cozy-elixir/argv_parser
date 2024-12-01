@@ -1,13 +1,13 @@
-defmodule Optimus.Mixfile do
+defmodule ArgvParser.Mixfile do
   use Mix.Project
 
   @version "0.5.0"
   @description "Command line argument parser."
-  @source_url "https://github.com/funbox/optimus"
+  @source_url "https://github.com/cozy-elixir/argv_parser"
 
   def project do
     [
-      app: :optimus,
+      app: :argv_parser,
       version: @version,
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,

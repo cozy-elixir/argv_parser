@@ -1,45 +1,45 @@
-defmodule OptimusTest do
+defmodule ArgvParserTest do
   use ExUnit.Case
 
   import ExUnit.CaptureIO
 
   test "minimal" do
-    assert {:ok, _} = Optimus.new([])
+    assert {:ok, _} = ArgvParser.new([])
   end
 
   test "invalid name" do
-    assert {:error, _} = Optimus.new(name: 1)
+    assert {:error, _} = ArgvParser.new(name: 1)
 
-    assert {:error, _} = Optimus.new(name: "name with spaces")
+    assert {:error, _} = ArgvParser.new(name: "name with spaces")
   end
 
   test "invalid description" do
-    assert {:error, _} = Optimus.new(description: 1)
+    assert {:error, _} = ArgvParser.new(description: 1)
   end
 
   test "invalid version" do
-    assert {:error, _} = Optimus.new(version: 1)
+    assert {:error, _} = ArgvParser.new(version: 1)
   end
 
   test "invalid author" do
-    assert {:error, _} = Optimus.new(version: 1)
+    assert {:error, _} = ArgvParser.new(version: 1)
   end
 
   test "invalid about" do
-    assert {:error, _} = Optimus.new(about: 1)
+    assert {:error, _} = ArgvParser.new(about: 1)
   end
 
   test "invalid allow_unknown_args" do
-    assert {:error, _} = Optimus.new(allow_unknown_args: "allow")
+    assert {:error, _} = ArgvParser.new(allow_unknown_args: "allow")
   end
 
   test "invalid parse_double_dash" do
-    assert {:error, _} = Optimus.new(parse_double_dash: "parse")
+    assert {:error, _} = ArgvParser.new(parse_double_dash: "parse")
   end
 
   test "minimal arg" do
     assert {:ok, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: []
                ]
@@ -48,7 +48,7 @@ defmodule OptimusTest do
 
   test "arg: invalid value_name" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [
                    value_name: 1
@@ -59,7 +59,7 @@ defmodule OptimusTest do
 
   test "arg: invalid help" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [
                    help: 1
@@ -70,7 +70,7 @@ defmodule OptimusTest do
 
   test "arg: invalid required" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [
                    required: 1
@@ -81,7 +81,7 @@ defmodule OptimusTest do
 
   test "arg: invalid parser" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [
                    parser: :invalid
@@ -92,7 +92,7 @@ defmodule OptimusTest do
 
   test "arg: invalid required order" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [
                    required: false
@@ -106,7 +106,7 @@ defmodule OptimusTest do
 
   test "option: minimal" do
     assert {:ok, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    short: "-f"
@@ -117,7 +117,7 @@ defmodule OptimusTest do
 
   test "option: invalid short" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    short: "-ff"
@@ -128,7 +128,7 @@ defmodule OptimusTest do
 
   test "option: invalid long" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    long: "--lo ng"
@@ -139,7 +139,7 @@ defmodule OptimusTest do
 
   test "option: invalid help" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    help: 1
@@ -150,7 +150,7 @@ defmodule OptimusTest do
 
   test "option: invalid parser" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    parser: fn _, _ -> {:ok, ""} end
@@ -161,7 +161,7 @@ defmodule OptimusTest do
 
   test "option: invalid required" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [
                    required: 1
@@ -172,7 +172,7 @@ defmodule OptimusTest do
 
   test "option: neither short nor long" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: []
                ]
@@ -181,7 +181,7 @@ defmodule OptimusTest do
 
   test "flag: minimal" do
     assert {:ok, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [
                    short: "-f"
@@ -192,7 +192,7 @@ defmodule OptimusTest do
 
   test "flag: invalid short" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [
                    short: "-ff"
@@ -203,7 +203,7 @@ defmodule OptimusTest do
 
   test "flag: invalid long" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [
                    long: "--lo ng"
@@ -214,7 +214,7 @@ defmodule OptimusTest do
 
   test "flag: invalid help" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [
                    help: 1
@@ -225,7 +225,7 @@ defmodule OptimusTest do
 
   test "flag: invalid multiple" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [
                    multiple: 1
@@ -236,7 +236,7 @@ defmodule OptimusTest do
 
   test "flag: neither short nor long" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: []
                ]
@@ -245,7 +245,7 @@ defmodule OptimusTest do
 
   test "flag and option short name conflict" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  options: [short: "-s"]
                ],
@@ -257,7 +257,7 @@ defmodule OptimusTest do
 
   test "flag and option long name conflict" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  options: [long: "--long"]
                ],
@@ -269,7 +269,7 @@ defmodule OptimusTest do
 
   test "invalid subcommand" do
     assert {:error, _} =
-             Optimus.new(
+             ArgvParser.new(
                subcommands: [
                  subcommand: [
                    options: [
@@ -368,12 +368,12 @@ defmodule OptimusTest do
     ]
 
   test "test full valid config" do
-    assert {:ok, _} = Optimus.new(full_valid_config())
+    assert {:ok, _} = ArgvParser.new(full_valid_config())
   end
 
   test "parse: check format for arg" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         args: [
           first: [
             parser: :integer
@@ -381,11 +381,11 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{not_an_int})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{123})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{not_an_int})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{123})
 
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         args: [
           first: [
             parser: fn val ->
@@ -398,13 +398,13 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{not_VAL})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{VAL})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{not_VAL})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{VAL})
   end
 
   test "parse: check format for option" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         options: [
           first: [
             short: "-f",
@@ -413,11 +413,11 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{-f not_an_int})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-f 123})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{-f not_an_int})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-f 123})
 
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         options: [
           first: [
             short: "-f",
@@ -431,13 +431,13 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{-f not_VAL})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-f VAL})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{-f not_VAL})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-f VAL})
   end
 
   test "parse: check multiple occurrences for option" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         options: [
           first: [
             short: "-f",
@@ -452,13 +452,13 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{-f a -s b -s c})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-f a -f b -s c})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{-f a -s b -s c})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-f a -f b -s c})
   end
 
   test "parse: check multiple occurrences for flag" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         flags: [
           first: [
             short: "-f",
@@ -471,66 +471,66 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{-s -s})
-    assert {:error, _} = Optimus.parse(optimus, ~w{-sfs})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-f -f})
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-fffffsffff})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{-s -s})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{-sfs})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-f -f})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-fffffsffff})
   end
 
   test "parse: invalid command line" do
-    {:ok, optimus} = Optimus.new(allow_unknown_args: true)
-    assert {:error, _} = Optimus.parse(optimus, [1, 2, 3])
+    {:ok, optimus} = ArgvParser.new(allow_unknown_args: true)
+    assert {:error, _} = ArgvParser.parse(optimus, [1, 2, 3])
   end
 
   test "parse: unrecognized arguments" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         args: [
           first: []
         ]
       )
 
-    assert {:ok, _} = Optimus.parse(optimus, ~w{a1})
-    assert {:error, _} = Optimus.parse(optimus, ~w{a1 a2})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{a1})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{a1 a2})
 
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         allow_unknown_args: true,
         args: [
           first: []
         ]
       )
 
-    assert {:ok, _} = Optimus.parse(optimus, ~w{a1 a2})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{a1 a2})
   end
 
   test "parse: missing required args" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         args: [
           first: [required: true]
         ]
       )
 
-    assert {:ok, _} = Optimus.parse(optimus, ~w{a1})
-    assert {:error, _} = Optimus.parse(optimus, ~w{})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{a1})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{})
   end
 
   test "parse: missing required options" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         options: [
           first: [required: true, short: "-f"]
         ]
       )
 
-    assert {:ok, _} = Optimus.parse(optimus, ~w{-f a1})
-    assert {:error, _} = Optimus.parse(optimus, ~w{})
+    assert {:ok, _} = ArgvParser.parse(optimus, ~w{-f a1})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{})
   end
 
   test "parse: check subcommand" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           first: [
             name: "s1",
@@ -544,18 +544,18 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, [:first, :second], _} = Optimus.parse(optimus, ~w{s1 s2 -o not_an_int})
+    assert {:error, [:first, :second], _} = ArgvParser.parse(optimus, ~w{s1 s2 -o not_an_int})
   end
 
   test "parse: full configuration" do
-    assert {:ok, optimus} = Optimus.new(full_valid_config())
+    assert {:ok, optimus} = ArgvParser.new(full_valid_config())
     command_line = ~w{123 AA -f --second-flag -s -o 123 --second-option DD -- thirdthird --fourth}
-    assert {:ok, _} = Optimus.parse(optimus, command_line)
+    assert {:ok, _} = ArgvParser.parse(optimus, command_line)
   end
 
   test "parse: args" do
     assert {:ok, optimus} =
-             Optimus.new(
+             ArgvParser.new(
                args: [
                  first: [parser: :integer],
                  second: [parser: :float],
@@ -566,7 +566,7 @@ defmodule OptimusTest do
              )
 
     command_line = ~w{123 2.5 third fourth fifth}
-    assert {:ok, parsed} = Optimus.parse(optimus, command_line)
+    assert {:ok, parsed} = ArgvParser.parse(optimus, command_line)
 
     assert 123 == parsed.args[:first]
     assert 2.5 == parsed.args[:second]
@@ -577,7 +577,7 @@ defmodule OptimusTest do
 
   test "parse: flags" do
     assert {:ok, optimus} =
-             Optimus.new(
+             ArgvParser.new(
                flags: [
                  first: [short: "-f"],
                  second: [long: "--second"],
@@ -591,7 +591,7 @@ defmodule OptimusTest do
              )
 
     command_line = ~w{-f --second -t --third -xyxz}
-    assert {:ok, parsed} = Optimus.parse(optimus, command_line)
+    assert {:ok, parsed} = ArgvParser.parse(optimus, command_line)
     assert true == parsed.flags[:first]
     assert true == parsed.flags[:second]
     assert 2 == parsed.flags[:third]
@@ -604,7 +604,7 @@ defmodule OptimusTest do
 
   test "parse: options" do
     assert {:ok, optimus} =
-             Optimus.new(
+             ArgvParser.new(
                options: [
                  first: [short: "-f", parser: :integer],
                  second: [long: "--second", parser: :float],
@@ -623,7 +623,7 @@ defmodule OptimusTest do
              )
 
     command_line = ~w{-f 123 --second 2.5 -t a --third b --sixth=6}
-    assert {:ok, parsed} = Optimus.parse(optimus, command_line)
+    assert {:ok, parsed} = ArgvParser.parse(optimus, command_line)
 
     assert 123 == parsed.options[:first]
     assert 2.5 == parsed.options[:second]
@@ -637,7 +637,7 @@ defmodule OptimusTest do
 
   test "parse: unknown" do
     assert {:ok, optimus} =
-             Optimus.new(
+             ArgvParser.new(
                allow_unknown_args: true,
                args: [first: []],
                flags: [first: [short: "-f"]],
@@ -645,13 +645,13 @@ defmodule OptimusTest do
              )
 
     command_line = ~w{a -f b -o o c -- d}
-    assert {:ok, parsed} = Optimus.parse(optimus, command_line)
+    assert {:ok, parsed} = ArgvParser.parse(optimus, command_line)
     assert ~w{b c d} == parsed.unknown
   end
 
   test "parse: subcommand" do
     assert {:ok, optimus} =
-             Optimus.new(
+             ArgvParser.new(
                subcommands: [
                  sub: [
                    name: "sub",
@@ -662,25 +662,25 @@ defmodule OptimusTest do
                ]
              )
 
-    assert {:ok, [:sub], parsed} = Optimus.parse(optimus, ~w{sub a -f -o o})
+    assert {:ok, [:sub], parsed} = ArgvParser.parse(optimus, ~w{sub a -f -o o})
     assert "a" == parsed.args[:first]
     assert true == parsed.flags[:first]
     assert "o" == parsed.options[:first]
   end
 
   test "parse: --version" do
-    {:ok, optimus} = Optimus.new([])
-    assert :version == Optimus.parse(optimus, ~w{--version})
+    {:ok, optimus} = ArgvParser.new([])
+    assert :version == ArgvParser.parse(optimus, ~w{--version})
   end
 
   test "parse: --help" do
-    {:ok, optimus} = Optimus.new([])
-    assert :help == Optimus.parse(optimus, ~w{--help})
+    {:ok, optimus} = ArgvParser.new([])
+    assert :help == ArgvParser.parse(optimus, ~w{--help})
   end
 
   test "parse: help" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           sub: [
             name: "sub"
@@ -688,12 +688,12 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:help, [:sub]} == Optimus.parse(optimus, ~w{help sub})
+    assert {:help, [:sub]} == ArgvParser.parse(optimus, ~w{help sub})
   end
 
   test "parse: invalid help" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           sub: [
             name: "sub"
@@ -701,12 +701,12 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {:error, _} = Optimus.parse(optimus, ~w{help subinvalid})
+    assert {:error, _} = ArgvParser.parse(optimus, ~w{help subinvalid})
   end
 
   test "parse! with valid subcommand args" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           sub: [
             name: "sub",
@@ -715,12 +715,12 @@ defmodule OptimusTest do
         ]
       )
 
-    assert {[:sub], %Optimus.ParseResult{}} = Optimus.parse!(optimus, ~w{sub})
+    assert {[:sub], %ArgvParser.ParseResult{}} = ArgvParser.parse!(optimus, ~w{sub})
   end
 
   test "parse! with invalid subcommand args" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           sub: [
             name: "sub",
@@ -732,13 +732,13 @@ defmodule OptimusTest do
     halt = fn val -> {:halt, val} end
 
     capture_io(fn ->
-      assert {:halt, 1} == Optimus.parse!(optimus, ~w{sub unknown}, halt)
+      assert {:halt, 1} == ArgvParser.parse!(optimus, ~w{sub unknown}, halt)
     end)
   end
 
   test "help" do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         subcommands: [
           sub: [
             name: "sub"
@@ -746,6 +746,6 @@ defmodule OptimusTest do
         ]
       )
 
-    assert is_binary(Optimus.help(optimus))
+    assert is_binary(ArgvParser.help(optimus))
   end
 end

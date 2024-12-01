@@ -1,4 +1,4 @@
-defprotocol Optimus.Format do
+defprotocol ArgvParser.Format do
   def help(formatable)
   def format(formatable)
   def format_in_usage(formatable)

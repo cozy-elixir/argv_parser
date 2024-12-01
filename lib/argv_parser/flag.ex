@@ -1,4 +1,4 @@
-defmodule Optimus.Flag do
+defmodule ArgvParser.Flag do
   defstruct [
     :name,
     :short,
@@ -8,7 +8,7 @@ defmodule Optimus.Flag do
   ]
 
   def new(spec) do
-    Optimus.Flag.Builder.build(spec)
+    ArgvParser.Flag.Builder.build(spec)
   end
 
   def parse(flag, parsed, [_item | _rest] = items) do
@@ -19,7 +19,7 @@ defmodule Optimus.Flag do
         if flag.multiple || !Map.has_key?(parsed, key) do
           {:ok, Map.update(parsed, key, 1, &(1 + &1)), new_items}
         else
-          {:error, "multiple occurrences of flag #{Optimus.Format.format_in_error(flag)}",
+          {:error, "multiple occurrences of flag #{ArgvParser.Format.format_in_error(flag)}",
            new_items}
         end
 
@@ -60,7 +60,7 @@ defmodule Optimus.Flag do
   def try_match([], _, _), do: :skip
 end
 
-defimpl Optimus.Format, for: Optimus.Flag do
+defimpl ArgvParser.Format, for: ArgvParser.Flag do
   def format(flag) do
     [flag.short, flag.long]
     |> Enum.reject(&is_nil/1)

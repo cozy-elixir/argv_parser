@@ -1,9 +1,9 @@
-defmodule Optimus.HelpTest do
+defmodule ArgvParser.HelpTest do
   use ExUnit.Case
 
   def optimus do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         name: "awesome",
         description: "Elixir App",
         version: "1.0.1",
@@ -158,6 +158,6 @@ defmodule Optimus.HelpTest do
              "                      appreciate you being 'round Help me get my feet back on   ",
              "                      the ground Won't you please, please help me?              ",
              ""
-           ] == Optimus.Help.help(optimus(), [], 80)
+           ] == ArgvParser.Help.help(optimus(), [], 80)
   end
 end

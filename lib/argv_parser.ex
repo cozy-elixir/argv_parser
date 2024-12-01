@@ -1,7 +1,7 @@
-defmodule Optimus do
-  alias Optimus.Arg
-  alias Optimus.Flag
-  alias Optimus.Option
+defmodule ArgvParser do
+  alias ArgvParser.Arg
+  alias ArgvParser.Flag
+  alias ArgvParser.Option
 
   defstruct [
     :name,
@@ -36,7 +36,7 @@ defmodule Optimus do
               unknown: []
   end
 
-  defmodule OptimusConfigurationError do
+  defmodule ArgvParserConfigurationError do
     defexception message: "invalid optimus configuration"
   end
 
@@ -84,13 +84,13 @@ defmodule Optimus do
   @type spec :: [spec_item]
 
   @type error :: String.t()
-  @opaque t :: %Optimus{}
+  @opaque t :: %ArgvParser{}
 
   @spec new(spec) :: {:ok, t} | {:error, [error]}
   def new(props) do
     props
     |> set_default_name
-    |> Optimus.Builder.build()
+    |> ArgvParser.Builder.build()
   end
 
   @spec new!(spec) :: t | no_return
@@ -100,7 +100,7 @@ defmodule Optimus do
         optimus
 
       {:error, error} ->
-        raise OptimusConfigurationError, message: "invalid optimus configuration: #{error}"
+        raise ArgvParserConfigurationError, message: "invalid optimus configuration: #{error}"
     end
   end
 
@@ -144,35 +144,35 @@ defmodule Optimus do
         {subcommand_path, parse_result}
 
       {:error, errors} ->
-        optimus |> Optimus.Errors.format(errors) |> put_lines
+        optimus |> ArgvParser.Errors.format(errors) |> put_lines
         halt.(1)
 
       {:error, subcommand_path, errors} ->
-        optimus |> Optimus.Errors.format(subcommand_path, errors) |> put_lines
+        optimus |> ArgvParser.Errors.format(subcommand_path, errors) |> put_lines
         halt.(1)
 
       :version ->
-        optimus |> Optimus.Title.title() |> put_lines
+        optimus |> ArgvParser.Title.title() |> put_lines
         halt.(0)
 
       :help ->
-        optimus |> Optimus.Help.help([], columns()) |> put_lines
+        optimus |> ArgvParser.Help.help([], columns()) |> put_lines
         halt.(0)
 
       {:help, subcommand_path} ->
-        optimus |> Optimus.Help.help(subcommand_path, columns()) |> put_lines
+        optimus |> ArgvParser.Help.help(subcommand_path, columns()) |> put_lines
         halt.(0)
     end
   end
 
   def help(optimus) do
     optimus
-    |> Optimus.Help.help([], columns())
+    |> ArgvParser.Help.help([], columns())
     |> Enum.join("\n")
   end
 
   defp columns do
-    case Optimus.Term.width() do
+    case ArgvParser.Term.width() do
       {:ok, width} -> width
       _ -> 80
     end
@@ -200,7 +200,7 @@ defmodule Optimus do
 
   defp find_exact_subcommand(optimus, [name | rest], found_path) do
     case Enum.find(optimus.subcommands, &(name == &1.name)) do
-      %Optimus{subcommand: subcommand} = sub_optimus ->
+      %ArgvParser{subcommand: subcommand} = sub_optimus ->
         find_exact_subcommand(sub_optimus, rest, [subcommand | found_path])
 
       _ ->
@@ -282,7 +282,7 @@ defmodule Optimus do
 
   defp find_subcommand(optimus, path, [item | items] = command_line) do
     case Enum.find(optimus.subcommands, &(item == &1.name)) do
-      %Optimus{} = sub_optimus ->
+      %ArgvParser{} = sub_optimus ->
         find_subcommand(sub_optimus, [sub_optimus.subcommand | path], items)
 
       nil ->
@@ -380,13 +380,13 @@ defmodule Optimus do
       optimus.args
       |> Enum.reject(&Map.has_key?(parsed, {:arg, &1.name}))
       |> Enum.filter(& &1.required)
-      |> Enum.map(&Optimus.Format.format_in_error(&1))
+      |> Enum.map(&ArgvParser.Format.format_in_error(&1))
 
     missing_required_options =
       optimus.options
       |> Enum.reject(&Map.has_key?(parsed, {:option, &1.name}))
       |> Enum.filter(& &1.required)
-      |> Enum.map(&Optimus.Format.format_in_error(&1))
+      |> Enum.map(&ArgvParser.Format.format_in_error(&1))
 
     required_arg_error =
       case missing_required_args do
@@ -437,7 +437,7 @@ defmodule Optimus do
   end
 end
 
-defimpl Optimus.Format, for: Optimus do
+defimpl ArgvParser.Format, for: ArgvParser do
   def format(optimus), do: optimus.name
   def format_in_error(optimus), do: optimus.name
   def format_in_usage(optimus), do: optimus.name

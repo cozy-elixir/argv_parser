@@ -1,9 +1,9 @@
-defmodule Optimus.FormatableHelpTest do
+defmodule ArgvParser.FormatableHelpTest do
   use ExUnit.Case
 
   def optimus do
     {:ok, optimus} =
-      Optimus.new(
+      ArgvParser.new(
         name: "awesome",
         args: [
           first: [
@@ -56,7 +56,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "arg column help" do
-    help = Optimus.FormatableHelp.formatable_help("ARGS:", optimus().args, 80)
+    help = ArgvParser.FormatableHelp.formatable_help("ARGS:", optimus().args, 80)
 
     assert help == [
              "ARGS:",
@@ -74,7 +74,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "arg simple help" do
-    help = Optimus.FormatableHelp.formatable_help("ARGS:", optimus().args, 10)
+    help = ArgvParser.FormatableHelp.formatable_help("ARGS:", optimus().args, 10)
 
     assert help == [
              "ARGS:",
@@ -86,7 +86,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "options column help" do
-    help = Optimus.FormatableHelp.formatable_help("OPTIONS:", optimus().options, 80)
+    help = ArgvParser.FormatableHelp.formatable_help("OPTIONS:", optimus().options, 80)
 
     assert help == [
              "OPTIONS:",
@@ -103,7 +103,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "options simple help" do
-    help = Optimus.FormatableHelp.formatable_help("OPTIONS:", optimus().options, 10)
+    help = ArgvParser.FormatableHelp.formatable_help("OPTIONS:", optimus().options, 10)
 
     assert help == [
              "OPTIONS:",
@@ -114,7 +114,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "flag column help" do
-    help = Optimus.FormatableHelp.formatable_help("FLAGS:", optimus().flags, 80)
+    help = ArgvParser.FormatableHelp.formatable_help("FLAGS:", optimus().flags, 80)
 
     assert help == [
              "FLAGS:",
@@ -129,7 +129,7 @@ defmodule Optimus.FormatableHelpTest do
   end
 
   test "flag simple help" do
-    help = Optimus.FormatableHelp.formatable_help("FLAGS:", optimus().flags, 10)
+    help = ArgvParser.FormatableHelp.formatable_help("FLAGS:", optimus().flags, 10)
 
     assert help == [
              "FLAGS:",

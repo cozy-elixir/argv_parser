@@ -1,6 +1,6 @@
-defmodule Optimus.Flag.Builder do
-  alias Optimus.Flag
-  alias Optimus.PropertyParsers, as: PP
+defmodule ArgvParser.Flag.Builder do
+  alias ArgvParser.Flag
+  alias ArgvParser.PropertyParsers, as: PP
 
   def build({name, props}) do
     case build_from_props(%Flag{name: name}, props) do

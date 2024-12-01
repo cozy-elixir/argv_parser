@@ -1,4 +1,6 @@
-defmodule Optimus.ColumnFormatter do
+defmodule ArgvParser.ColumnFormatter do
+  @moduledoc false
+
   @type align :: :left | :center | :right
   @type column_spec :: pos_integer | {pos_integer, align}
 

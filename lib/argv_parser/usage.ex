@@ -1,6 +1,6 @@
-defmodule Optimus.Usage do
+defmodule ArgvParser.Usage do
   def usage(optimus, subcommand_path \\ []) do
-    {subcommand, subcommand_name} = Optimus.fetch_subcommand(optimus, subcommand_path)
+    {subcommand, subcommand_name} = ArgvParser.fetch_subcommand(optimus, subcommand_path)
     flag_info = format_usage(subcommand.flags)
     option_info = format_usage(subcommand.options)
     arg_info = format_arg_usage(subcommand)
@@ -25,7 +25,7 @@ defmodule Optimus.Usage do
 
   defp format_usage(formatables) do
     formatables
-    |> Enum.map(&Optimus.Format.format_in_usage/1)
+    |> Enum.map(&ArgvParser.Format.format_in_usage/1)
   end
 
   defp format_arg_usage(subcommand) do

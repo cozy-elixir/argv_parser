@@ -1,4 +1,4 @@
-defmodule Optimus.PropertyParsers do
+defmodule ArgvParser.PropertyParsers do
   def build_parser(_name, :integer) do
     {:ok, &integer_parser/1}
   end

@@ -1,6 +1,6 @@
-defmodule Optimus.Builder do
-  alias Optimus
-  alias Optimus.PropertyParsers, as: PP
+defmodule ArgvParser.Builder do
+  alias ArgvParser
+  alias ArgvParser.PropertyParsers, as: PP
 
   def build(props) do
     with :ok <- validate_keyword_list(props),
@@ -19,7 +19,7 @@ defmodule Optimus.Builder do
          :ok <- validate_conflicts(flags, options),
          do:
            {:ok,
-            %Optimus{
+            %ArgvParser{
               name: name,
               description: description,
               version: version,
@@ -62,9 +62,9 @@ defmodule Optimus.Builder do
     PP.build_bool(:parse_double_dash, props[:parse_double_dash], true)
   end
 
-  defp build_args(specs), do: build_specs("args", Optimus.Arg, specs)
-  defp build_flags(specs), do: build_specs("flags", Optimus.Flag, specs)
-  defp build_options(specs), do: build_specs("options", Optimus.Option, specs)
+  defp build_args(specs), do: build_specs("args", ArgvParser.Arg, specs)
+  defp build_flags(specs), do: build_specs("flags", ArgvParser.Flag, specs)
+  defp build_options(specs), do: build_specs("options", ArgvParser.Option, specs)
 
   defp build_specs(_name, _module, nil), do: {:ok, []}
 
@@ -100,10 +100,10 @@ defmodule Optimus.Builder do
         subcommand_with_name =
           case subcommand.name do
             nil ->
-              %Optimus{subcommand | subcommand: subcommand_name, name: to_string(subcommand_name)}
+              %ArgvParser{subcommand | subcommand: subcommand_name, name: to_string(subcommand_name)}
 
             _ ->
-              %Optimus{subcommand | subcommand: subcommand_name}
+              %ArgvParser{subcommand | subcommand: subcommand_name}
           end
 
         build_subcommands_(other, [subcommand_with_name | parsed])

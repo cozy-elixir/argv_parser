@@ -1,4 +1,4 @@
-defmodule Optimus.Title do
+defmodule ArgvParser.Title do
   def title(optimus, subcommand_path \\ []) do
     {author, description, version, about} = find_title_info(optimus, subcommand_path)
 
