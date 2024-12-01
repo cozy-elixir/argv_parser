@@ -172,8 +172,8 @@ defmodule ArgvParser do
   end
 
   defp columns do
-    case ArgvParser.Term.width() do
-      {:ok, width} -> width
+    case :io.columns() do
+      {:ok, columns} -> columns
       _ -> 80
     end
   end
