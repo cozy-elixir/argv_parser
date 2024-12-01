@@ -1,29 +1,10 @@
 defmodule ArgvParser.PropertyParsers do
-  def build_parser(_name, :integer) do
-    {:ok, &integer_parser/1}
-  end
+  @moduledoc false
 
-  def build_parser(name, "integer"), do: build_parser(name, :integer)
-  def build_parser(name, ":integer"), do: build_parser(name, :integer)
-
-  def build_parser(_name, :float) do
-    {:ok, &float_parser/1}
-  end
-
-  def build_parser(name, "float"), do: build_parser(name, :float)
-  def build_parser(name, ":float"), do: build_parser(name, :float)
-
-  def build_parser(_name, :string) do
-    {:ok, &string_parser/1}
-  end
-
-  def build_parser(name, "string"), do: build_parser(name, :string)
-  def build_parser(name, ":string"), do: build_parser(name, :string)
-
-  def build_parser(_name, nil) do
-    {:ok, &string_parser/1}
-  end
-
+  def build_parser(_name, :integer), do: {:ok, &integer_parser/1}
+  def build_parser(_name, :float), do: {:ok, &float_parser/1}
+  def build_parser(_name, :string), do: {:ok, &string_parser/1}
+  def build_parser(_name, nil), do: {:ok, &string_parser/1}
   def build_parser(_name, fun) when is_function(fun, 1), do: {:ok, fun}
 
   def build_parser(name, _),
