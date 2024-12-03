@@ -1,62 +1,75 @@
 defmodule ArgvParser.Help do
-  def help(optimus, subcommand_path, max_width) do
-    title = ArgvParser.Title.title(optimus, subcommand_path)
-    usage = usage(optimus, subcommand_path)
+  alias ArgvParser.Format
+  alias __MODULE__.Formatter
 
-    {subcommand, _} = ArgvParser.fetch_subcommand(optimus, subcommand_path)
+  def help(optimus, command_path, max_width) do
+    title = ArgvParser.Title.title(optimus, command_path)
+    usage = usage(optimus, command_path)
 
-    formatable_help =
-      subcommand_formatables(subcommand)
-      |> nonempty_formatables
-      |> formatable_help(max_width)
+    {subcommand, _} = ArgvParser.fetch_subcommand(optimus, command_path)
+    sections = format_sections(subcommand, max_width)
 
-    title ++ usage ++ formatable_help ++ [""]
+    title ++ usage ++ sections ++ [""]
   end
 
   defp usage(optimus, []) do
     List.flatten([
-      "",
-      "USAGE:",
-      "    #{ArgvParser.Usage.usage(optimus)}",
-      "    #{ArgvParser.Usage.version_usage(optimus)}",
-      "    #{ArgvParser.Usage.help_usage(optimus)}",
+      "Usage:",
+      "  #{ArgvParser.Usage.usage(optimus)}",
+      "  #{ArgvParser.Usage.version_usage(optimus)}",
+      "  #{ArgvParser.Usage.help_usage(optimus)}",
       case optimus.subcommands do
         [] -> []
-        _ -> "    #{ArgvParser.Usage.subcomand_help_usage(optimus)}"
-      end,
-      ""
+        _ -> "  #{ArgvParser.Usage.subcomand_help_usage(optimus)}"
+      end
     ])
+    |> Enum.intersperse("\n")
   end
 
   defp usage(optimus, subcommand_path) do
     [
-      "",
-      "USAGE:",
-      "    #{ArgvParser.Usage.usage(optimus, subcommand_path)}",
-      ""
+      "Usage:",
+      "  #{ArgvParser.Usage.usage(optimus, subcommand_path)}"
     ]
+    |> Enum.intersperse("\n")
   end
 
-  defp subcommand_formatables(subcommand) do
+  defp format_sections(command, width) do
     [
-      {"ARGS:", subcommand.args},
-      {"FLAGS:", subcommand.flags},
-      {"OPTIONS:", subcommand.options},
-      {"SUBCOMMANDS:", subcommand.subcommands}
+      {"Commands:", command.subcommands},
+      {"Arguments:", command.args},
+      {"Flags:", command.flags},
+      {"Options:", command.options}
     ]
+    |> Enum.reject(fn {_, formatables} -> is_nil(formatables) || formatables == [] end)
+    |> Enum.map(fn {title, formatables} -> format_section({title, formatables}, width) end)
+    |> Enum.intersperse("\n")
   end
 
-  defp nonempty_formatables(formatables_with_titles) do
-    formatables_with_titles
-    |> Enum.reject(fn {_, list} -> is_nil(list) || list == [] end)
-  end
+  defp format_section({title, formatables}, width) do
+    title = Formatter.format(title, width)
 
-  defp formatable_help(formatables_with_titles, max_width) do
-    formatables_with_titles
-    |> Enum.map(fn {title, formatables} ->
-      ArgvParser.FormatableHelp.formatable_help(title, formatables, max_width)
-    end)
-    |> Enum.intersperse([""])
-    |> Enum.concat()
+    contents =
+      Enum.map(formatables, fn f ->
+        name = Format.format(f)
+        help = Format.help(f)
+        ["", name, "", help]
+      end)
+
+    names = Enum.map(contents, &Enum.at(&1, 1))
+    left_padding_width = 2
+    name_width = names |> Enum.map(&String.length/1) |> Enum.max()
+    sep_padding_width = 2
+    help_width = width - left_padding_width - name_width - sep_padding_width
+    widths = [left_padding_width, name_width, sep_padding_width, help_width]
+
+    contents =
+      Enum.map(contents, fn strings ->
+        strings
+        |> Enum.zip(widths)
+        |> Formatter.format_columns()
+      end)
+
+    [title, "\n", contents, "\n"]
   end
 end
